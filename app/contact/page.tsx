@@ -2,199 +2,241 @@
 
 import { useState } from "react"
 
-type FormType = {
-  name: string
-  email: string
-  mobile: string
-  subject: string
-  message: string
-}
-
 export default function Contact() {
 
-  const [form, setForm] = useState<FormType>({
-    name: "",
-    email: "",
-    mobile: "",
-    subject: "",
-    message: ""
-  })
-
-  const [loading, setLoading] = useState(false)
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-
-    e.preventDefault()
-    setLoading(true)
-
-    try {
-const res = await fetch("http://127.0.0.1:8000/contact", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-  },
-  body: JSON.stringify(form)
+const [form, setForm] = useState({
+name: "",
+email: "",
+mobile: "",
+subject: "",
+message: ""
 })
 
-      const data = await res.json()
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+setForm({
+...form,
+[e.target.name]: e.target.value
+})
+}
 
-      console.log("API RESPONSE:", data)
+const handleSubmit = async (e: React.FormEvent) => {
+e.preventDefault()
 
-      if (res.ok) {
+try {
 
-        alert(data.message || "Message sent successfully")
+const res = await fetch("/api/contact", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify(form)
+})
 
-        setForm({
-          name: "",
-          email: "",
-          mobile: "",
-          subject: "",
-          message: ""
-        })
+const data = await res.json()
 
-      } else {
+alert(data.message)
 
-        alert(data.message || "Submission failed")
+setForm({
+name: "",
+email: "",
+mobile: "",
+subject: "",
+message: ""
+})
 
-      }
+} catch (error) {
+alert("Something went wrong")
+}
 
-    } catch (error) {
+}
 
-      console.error("Request Error:", error)
-      alert("Server error. Please check Laravel server.")
+return (
 
-    } finally {
+<div className="bg-gray-50">
 
-      setLoading(false)
+{/* HERO SECTION */}
 
-    }
-  }
+<section className="relative h-[50vh] flex items-center justify-center">
 
-  return (
+<img
+src="https://picsum.photos/1600/900"
+className="absolute w-full h-full object-cover"
+alt="Contact Hero"
+/>
 
-    <div>
+<div className="absolute inset-0 bg-black/60 flex items-center justify-center">
 
-      {/* CONTACT SECTION */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 px-4">
+<h1 className="text-white text-4xl md:text-6xl font-bold">
+Contact Us
+</h1>
 
-          {/* CONTACT FORM */}
-          <div className="bg-white p-8 rounded-xl shadow-lg">
+</div>
 
-            <h2 className="text-2xl font-bold mb-6">
-              Send Enquiry
-            </h2>
+</section>
 
-            <form className="space-y-4" onSubmit={handleSubmit}>
 
-              <input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Your Name"
-                className="w-full border p-3 rounded"
-                required
-              />
+{/* PAGE HEADER */}
 
-              <input
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="Your Email"
-                className="w-full border p-3 rounded"
-                required
-              />
+<section className="py-16 text-center">
 
-              <input
-                name="mobile"
-                value={form.mobile}
-                onChange={handleChange}
-                placeholder="Mobile Number"
-                className="w-full border p-3 rounded"
-              />
+<div className="max-w-3xl mx-auto px-4">
 
-              <input
-                name="subject"
-                value={form.subject}
-                onChange={handleChange}
-                placeholder="Subject"
-                className="w-full border p-3 rounded"
-              />
+<h2 className="text-3xl font-bold mb-4">
+Get In Touch
+</h2>
 
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                rows={5}
-                placeholder="Message"
-                className="w-full border p-3 rounded"
-                required
-              />
+<p className="text-gray-600">
+Have a project in mind? Send us a message and our team will contact you soon.
+</p>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 disabled:opacity-50"
-              >
-                {loading ? "Sending..." : "Send Message"}
-              </button>
+</div>
 
-            </form>
+</section>
 
-          </div>
 
-          {/* CONTACT DETAILS */}
-          <div>
+{/* CONTACT SECTION */}
 
-            <h2 className="text-2xl font-bold mb-6">
-              Contact Information
-            </h2>
+<section className="pb-20">
 
-            <div className="space-y-6">
+<div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 px-4">
 
-              <div className="bg-gray-100 p-6 rounded-xl">
-                <h3 className="text-lg font-semibold mb-2">📍 Address</h3>
-                <p className="text-gray-600">Delhi, India</p>
-              </div>
+{/* CONTACT FORM */}
 
-              <div className="bg-gray-100 p-6 rounded-xl">
-                <h3 className="text-lg font-semibold mb-2">📞 Mobile Number</h3>
-                <p className="text-gray-600">+91 9876543210</p>
-              </div>
+<div className="bg-white p-8 rounded-xl shadow-lg">
 
-              <div className="bg-gray-100 p-6 rounded-xl">
-                <h3 className="text-lg font-semibold mb-2">✉ Email Address</h3>
-                <p className="text-gray-600">info@itcompany.com</p>
-              </div>
+<h3 className="text-2xl font-semibold mb-6">
+Send Enquiry
+</h3>
 
-            </div>
+<form className="space-y-4" onSubmit={handleSubmit}>
 
-          </div>
+<input
+name="name"
+value={form.name}
+onChange={handleChange}
+type="text"
+placeholder="Your Name"
+className="w-full border p-3 rounded"
+required
+/>
 
-        </div>
-      </section>
+<input
+name="email"
+value={form.email}
+onChange={handleChange}
+type="email"
+placeholder="Your Email"
+className="w-full border p-3 rounded"
+required
+/>
 
-      {/* GOOGLE MAP */}
-      <section className="pb-20 px-4">
-        <div className="max-w-7xl mx-auto rounded-xl overflow-hidden shadow">
+<input
+name="mobile"
+value={form.mobile}
+onChange={handleChange}
+type="text"
+placeholder="Mobile Number"
+className="w-full border p-3 rounded"
+/>
 
-          <iframe
-            src="https://maps.google.com/maps?q=delhi&t=&z=13&ie=UTF8&iwloc=&output=embed"
-            className="w-full h-[400px]"
-            loading="lazy"
-          ></iframe>
+<input
+name="subject"
+value={form.subject}
+onChange={handleChange}
+type="text"
+placeholder="Subject"
+className="w-full border p-3 rounded"
+/>
 
-        </div>
-      </section>
+<textarea
+name="message"
+value={form.message}
+onChange={handleChange}
+rows={5}
+placeholder="Message"
+className="w-full border p-3 rounded"
+required
+/>
 
-    </div>
-  )
+<button
+type="submit"
+className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition"
+>
+Send Message
+</button>
+
+</form>
+
+</div>
+
+
+{/* CONTACT DETAILS */}
+
+<div className="space-y-6">
+
+<div className="bg-white p-6 rounded-xl shadow">
+
+<h4 className="text-lg font-semibold mb-2">
+📍 Address
+</h4>
+
+<p className="text-gray-600">
+Delhi, India
+</p>
+
+</div>
+
+
+<div className="bg-white p-6 rounded-xl shadow">
+
+<h4 className="text-lg font-semibold mb-2">
+📞 Mobile
+</h4>
+
+<p className="text-gray-600">
++91 9876543210
+</p>
+
+</div>
+
+
+<div className="bg-white p-6 rounded-xl shadow">
+
+<h4 className="text-lg font-semibold mb-2">
+✉ Email
+</h4>
+
+<p className="text-gray-600">
+info@itcompany.com
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+{/* MAP SECTION */}
+
+<section className="pb-20 px-4">
+
+<div className="max-w-7xl mx-auto rounded-xl overflow-hidden shadow">
+
+<iframe
+src="https://maps.google.com/maps?q=delhi&t=&z=13&ie=UTF8&iwloc=&output=embed"
+className="w-full h-[400px]"
+loading="lazy"
+/>
+
+</div>
+
+</section>
+
+</div>
+
+)
+
 }
