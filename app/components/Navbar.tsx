@@ -86,6 +86,10 @@ Services
 Contact
 </Link>
 
+<Link href="/blog" onClick={() => setOpen(false)}>
+Contact
+</Link>
+
 </div>
 
 )}
